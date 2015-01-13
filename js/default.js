@@ -58,8 +58,7 @@ function Init(){
 
 function addObjectsToScene(){
     //Add your objects here
-    var graph = new THREE.Mesh(new THREE.SphereGeometry(8, 30, 10), new   THREE.MeshLambertMaterial({color:0xffffff}));
-	  scene.add(graph);
+    setForegroundPlane( 'resource/linestest.jpg');
 }
 
 function addLights(){
@@ -72,4 +71,20 @@ function addLights(){
  	scene.add(pl);
  	var ambientLight = new THREE.AmbientLight(0x111111);	
  	scene.add(ambientLight);
+}
+
+function setForegroundPlane(filename) {
+	
+	var LEIA_foregroundPlaneTexture = new THREE.ImageUtils.loadTexture( filename );
+	LEIA_foregroundPlaneTexture.wrapS = LEIA_foregroundPlaneTexture.wrapT = THREE.RepeatWrapping; 
+	LEIA_foregroundPlaneTexture.repeat.set( 1, 1 );
+	var LEIA_foregroundPlaneMaterial = new THREE.MeshLambertMaterial( { map: LEIA_foregroundPlaneTexture, transparent:true, side: THREE.DoubleSide } );
+	var LEIA_foregroundPlaneGeometry;
+	//LEIA_foregroundPlaneGeometry = new THREE.PlaneGeometry(40, 40, 50, 50);
+	var l = 57.64;
+	//var l = 38.56;
+	//LEIA_foregroundPlaneGeometry = new THREE.PlaneGeometry(l, l, 50, 50);
+	LEIA_foregroundPlaneGeometry = new THREE.PlaneGeometry(l, 0.75*l, 10, 10);
+	LEIA_foregroundPlane = new THREE.Mesh(LEIA_foregroundPlaneGeometry, LEIA_foregroundPlaneMaterial);
+	scene.add(LEIA_foregroundPlane);
 }
