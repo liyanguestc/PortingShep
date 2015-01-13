@@ -1,11 +1,13 @@
  var windowWidth = window.innerWidth, windowHeight = window.innerHeight;
  var camera,renderer,scene;
+ var q = 0;
  head.ready(function() {
     Init();
     animate();
  });
 
 function Init(){
+        LEIA.heightControl = 0;
         scene = new THREE.Scene();
   
        //setup camera
@@ -39,12 +41,16 @@ function Init(){
   
         //add Gyro Monitor
         //addGyroMonitor();
+        
+        document.addEventListener( 'keydown', onDocumentKeyDown, false );
  }
 
  function animate() 
  {
  	requestAnimationFrame( animate );
-    renderer.setClearColor(new THREE.Color().setRGB(1.0, 1.0, 1.0)); 
+    //renderer.setClearColor(new THREE.Color().setRGB(1.0, 1.0, 1.0)); 
+   
+    LEIA_foregroundPlane.rotation.y = LEIA.heightControl*Math.cos(2*LEIA.time)/10*Math.PI;
 	renderer.Leia_render({
      scene:scene, 
      camera:camera,
@@ -87,4 +93,23 @@ function setForegroundPlane(filename) {
 	LEIA_foregroundPlaneGeometry = new THREE.PlaneGeometry(l, 0.75*l, 10, 10);
 	LEIA_foregroundPlane = new THREE.Mesh(LEIA_foregroundPlaneGeometry, LEIA_foregroundPlaneMaterial);
 	scene.add(LEIA_foregroundPlane);
+}
+
+
+function onDocumentKeyDown( event ) {
+	var keyCode = event.which;
+	var fn=window.location.pathname;
+
+	switch (keyCode) {
+        case 53: // numpad 5
+			LEIA.heightControl = LEIA.heightControl - 1.0;
+			console.log('LEIA.heightControl = '+LEIA.heightControl);
+			break;
+		case 54: // numpad 6 
+			LEIA.heightControl = LEIA.heightControl + 1.0;
+			console.log('LEIA.heightControl = '+LEIA.heightControl);
+			break;
+      default:
+            break;
+    }
 }
